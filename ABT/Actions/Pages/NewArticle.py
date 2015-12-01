@@ -3,10 +3,11 @@ Created on Dec 1, 2015
 
 @author: van.ngo
 '''
-from ABT.Interfaces.NewArticlePage import NewActiclePage
+from ABT.Interfaces.NewArticlePage import NewArticlePage
 from ABT.Actions.Pages.ManagerArticle import ManagerArticle
 
-class NewArticle(NewActiclePage):
+
+class NewArticle(NewArticlePage):
     '''
     classdocs
     '''
@@ -16,17 +17,26 @@ class NewArticle(NewActiclePage):
         '''
         Constructor
         '''
-        NewActiclePage.__init__(self)
-        ManagerArticle.__init__(self)
+        NewArticlePage.__init__(self)
+      
         
-    def crearNewArticle(self, driver, title, category, text):
+    def createNewArticle(self, driver, title, category, text, alias = None, status = None, access = None, permission = None, featureed = None, language = None):
         #Click on 'New' icon of the top right toolbar
-        ManagerArticle.clickNew(self, driver)
+        ManagerArticle().clickNew(driver)
         
         #Enter a title on 'Title' field
-        driver.find_element_by_xpath(self.).send_keys(title)
+        driver.find_element_by_xpath(self.txtTitle).send_keys(title)
         
+        #Select an item from the 'Category' dropdown list
+        driver.find_element_by_xpath(self.ddlCategory + category + "')]").click()
+       
+        
+        #Enter value on 'Article Text' text are
         driver.switch_to.frame(driver.find_element_by_tag_name("iframe"))
-        driver.find_element_by_xpath(self.txttitle).send_keys(title)
+        driver.find_element_by_xpath(self.txtText).send_keys(text)
         driver.switch_to.default_content()
+        
+        #Click on 'Save & Close' icon of the top right toolbar
+        driver.find_element_by_xpath(self.btnSaveAndClose).click()
+        
     

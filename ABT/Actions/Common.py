@@ -16,6 +16,8 @@ class Common():
         '''
         Constructor
         '''
+        username = "admin"
+        password = "admin"
         
     def logInfo(self, log):
         print strftime("%Y-%m-%d %H:%M:%S: ", localtime()) + log

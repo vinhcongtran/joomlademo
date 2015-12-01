@@ -1,14 +1,47 @@
-def ptb2(a,b,c):
-    print a,b,c
-    import math
-    delta = b*b - 4*a*c
-    if (delta < 0):
-        print " phuong trinh vo nghiem"
-    elif (delta == 0):
-        x1= (-b)/(2*a)
-        print "phuong trinh bac 2 co 1 nghiem :", x1        
-    else:
-        x1 = (-b + math.sqrt(delta))/ (2*a)
-        x2 = (-b - math.sqrt(delta))/ (2*a)
-        print "phuong trinh bac 2 co 2 nghiem :", x1 , x2
-ptb2(2, 9, 6);
+
+from time import localtime
+
+
+pathname = "Content>Article"
+# i = 0
+# try:
+#     i = pathname.find(">")
+#     element1 =  pathname[0:i]
+#     os.path.split(pathname)
+#     
+
+# a = pathname.split(">")
+# start = 0
+# end = len(a)
+# while end > start:
+#     print(a[start])
+#     start +=1
+ 
+path = "Content>Article Manager>Add New Article" 
+
+i = 0
+n = path.count('>')
+print n
+
+while n > i:
+    x = path.find(">")
+    e = path[:x]
+    print e
+
+    path = path[x+1:]
+    i +=1
+    print i
+    print path
+# words = path.split(">")
+# i = 0
+# length = len(words)
+# print length
+# # for each word in the line:
+# while i < int(length):
+#     for i in length:
+#         print words[i]
+#         i +=1
+        
+
+
+        

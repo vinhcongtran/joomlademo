@@ -3,6 +3,8 @@ Created on Dec 1, 2015
 
 @author: van.ngo
 '''
+import selenium.common.exceptions
+
 from ABT.Interfaces.ManagerArticlePage import ManagerArticlePage
 
 
@@ -18,21 +20,51 @@ class ManagerArticle(ManagerArticlePage):
         '''
         ManagerArticlePage.__init__(self)
     
-    def clickNew (self, driver):
-        driver.find_element_by_xpath(self.btnnew).click()
-        
-    def checkArticleCreated(self, driver, article):
-        
+    def clickToolbarButton (self, driver, button):
+        driver.find_element_by_xpath(self.btn + button + "')]").click()
+      
+    def checkSuccessMessage(self, driver, message):  
         try:
-            driver.find_element_by_xpath(self.msgsuccess)
-            print "VP1: PASSED 'Article successfully saved' message displays"
+            driver.find_element_by_xpath(self.msgSuccess + message + "']")
+            print "\tPASSED : " + message + " message displays"
         except:
-            print "VP1: FAILED 'Article successfully saved' message does not display"
+            print "FAILED : " + message + " message does not display"
+             
+    def checkArticleExist(self, driver, article):
+        
+        ManagerArticle().checkSuccessMessage(driver, "Article successfully saved")
             
-        driver.find_element_by_xpath(self.txtSearch).send_keys(article)
+        exist = self.searchArticle(driver, article)
+        if (exist):
+            print "\tPASSED : " + article + " article exists on the articles table"
+        else:
+            print "FAILED : '" + article + "' created article does not exist on the articles table"    
+            
+    def searchArticle(self, driver, title):
+        
+        driver.find_element_by_xpath(self.txtSearch).clear()
+        driver.find_element_by_xpath(self.txtSearch).send_keys(title)
         driver.find_element_by_xpath(self.btnSearch).click()
         try:
-            driver.find_element_by_xpath(self.rowArticle + article + "')]]")
-            print "VP2: Created article is displayed on the articles table"
+            driver.find_element_by_xpath(self.rowArticle + title + "')]]")
+            return True;
+        except selenium.common.exceptions.NoSuchElementException:
+            print "The searched Article does not exist"
+            return False;
+           
+    def selectFirstArticle (self, driver):
+        driver.find_element_by_xpath(self.cboFirstArticle).click()
+
+    
+    def deleteArticle(self, driver, title):
+        try:
+            if (ManagerArticle().searchArticle(driver, title)):
+                ManagerArticle().selectFirstArticle(driver)
+                ManagerArticle().clickToolbarButton(driver, "Trash")
+            else:
+                "The article" + title + "does not exist to delete"
         except:
-            print "VP2: Created article is not displayed on the articles table"    
+            print "Please create an article before deleting it"
+        
+        
+

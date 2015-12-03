@@ -19,7 +19,7 @@ class ManagerArticle(ManagerArticlePage):
         Constructor
         '''
         ManagerArticlePage.__init__(self)
-    
+
     def clickToolbarButton (self, driver, button):
         driver.find_element_by_xpath(self.btn + button + "')]").click()
       
@@ -66,5 +66,14 @@ class ManagerArticle(ManagerArticlePage):
         except:
             print "Please create an article before deleting it"
         
-        
+    def checkTextContains(self, driver, title):
+        try:
+            table = driver.find_element_by_xpath("//table[@class = 'adminlist']//tbody")
+            tablecontent = table.text
+            if title in tablecontent:
+                print "\tPASSED: The titles of displayed articles are partially matched with the entered keyword"
+            return True;
+        except:
+            print "\tFAILED: The titles of displayed articles are not partially matched with the entered keyword"
+            return False;
 

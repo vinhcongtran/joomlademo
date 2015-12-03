@@ -3,8 +3,6 @@ Created on Dec 2, 2015
 
 @author: van.ngo
 '''
-from _ast import Assert
-from cgitb import text
 from time import strftime, localtime
 
 from selenium.webdriver.common.action_chains import ActionChains
@@ -57,23 +55,25 @@ class TC04ArticleSearch(Login, ControlPanel, CommonActions, NewArticle, ManagerA
   
         self.logInfo("Step 6,7,8,9,10, 11 -  Create a new article ")
         self.createNewArticle(browser, self.title, self.category, self.text, self.option, self.status)
-          
+           
         #VP: 1. "Article successfully saved" message is displayed
         #VP: 2. Created article is displayed on the articles table
         self.logInfo("Step 12 -  Verify the article is saved successfully ")  
         self.checkArticleExist(browser, self.title)
-
+ 
         self.logInfo("Step 13,14 -  Search the recent created article ")  
         self.searchArticle(browser, self.title)
         
-        list = browser.find_elements_by_xpath("//table[@class = 'adminlist']")
-        print list
-        Assert.assertTrue(self.title, list.size() > 0)
+        #VP: 3. Verify the titles of displayed articles are partially matched with the entered keyword
+        self.logInfo("Step 15-  Verify the titles of displayed articles are partially matched with the entered keyword ")         
+        self.checkTextContains(browser, self.title)
+
+        
         
          
-#         #End conditions
-#         self.logOut(browser)
-#         browser.quit()
+        #End conditions
+        self.logOut(browser)
+        browser.quit()
          
         
 if __name__ == '__main__':

@@ -19,7 +19,11 @@ class NewArticle(NewArticlePage):
         '''
         NewArticlePage.__init__(self)
       
-        
+    ##############################################################################################################
+    # Create a new article
+    # @param driver: type of browser 
+    # @param title, category, ..: information of the title created
+    ##############################################################################################################        
     def createNewArticle(self, driver, title, category, text, option, status = None, alias = None, access = None, permission = None, featureed = None, language = None):
         #Click on 'New' icon of the top right toolbar
         ManagerArticle().clickToolbarButton(driver, "New")
@@ -30,6 +34,12 @@ class NewArticle(NewArticlePage):
         #Click option icon to save of the top right toolbar
         driver.find_element_by_xpath(self.btnToolbarBox + option + "']").click()
         
+        
+    ##############################################################################################################
+    # Enter values for a new title
+    # @param driver: type of browser 
+    # @param title, category, ..: information of the title expected to enter 
+    ##############################################################################################################                
     def enterValue (self, driver, title, category, text, status = None):
         
         driver.find_element_by_xpath(self.txtTitle).clear()
@@ -47,7 +57,13 @@ class NewArticle(NewArticlePage):
         driver.find_element_by_xpath(self.txtText).clear()
         driver.find_element_by_xpath(self.txtText).send_keys(text)
         driver.switch_to.default_content()
-        
+
+
+    ##############################################################################################################
+    # Edit an existing article
+    # @param driver: type of browser 
+    # @param title, category, ..: information of the title edited
+    ##############################################################################################################                
     def editArticle(self, driver, title, newtitle, newcategory, newtext, newoption):
         #select Article
         ManagerArticle().selectFirstArticle(driver)

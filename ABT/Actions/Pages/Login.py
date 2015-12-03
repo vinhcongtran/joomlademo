@@ -22,12 +22,22 @@ class Login(LoginPage):
         '''
         LoginPage.__init__(self)
 
-    
+    ##############################################################################################################
+    # Open new browser
+    # @param driver: type of browser 
+    # @return browser object
+    ##############################################################################################################    
     def openBrowser(self):
         driver = webdriver.Firefox()
         time.sleep(5)
         return driver
-    
+
+
+    ##############################################################################################################
+    # Navigate to a url
+    # @param driver: type of browser 
+    # @param url: the url expected to navigate
+    ##############################################################################################################    
     def navigate(self, driver, url):
         driver.get(url)
         
@@ -39,7 +49,12 @@ class Login(LoginPage):
     
     def clickLoginButton(self, driver):
         driver.find_element_by_xpath(self.btnLogin).click()
-        
+     
+    ##############################################################################################################
+    # Log into an existing account
+    # @param driver: type of browser 
+    # @param username, password: the username and password expected to log
+    ##############################################################################################################       
     def login(self, driver, username, password):
         self.enterUsername(driver, username)
         self.enterPassword(driver, password)

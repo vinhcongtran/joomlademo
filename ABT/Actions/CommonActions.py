@@ -12,6 +12,9 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from ABT.Interfaces.CommonUI import CommonUI
 from ABT.Modules.Common.Config import Config
+import time
+
+
 
 
 class CommonActions(CommonUI,Config):
@@ -32,6 +35,9 @@ class CommonActions(CommonUI,Config):
         
     def logInfo(self, log):
         print strftime("%Y-%m-%d %H:%M:%S: ", localtime()) + log
+    
+    def wait(self, seconds):
+        time.sleep(seconds)
         
     def logOut(self, driver):
         try:
@@ -109,5 +115,11 @@ class CommonActions(CommonUI,Config):
             driver.switch_to_frame(frameReference)
         except Exception, e:
             print e
-            self.logInfo("Cannot switch to frame " + frameReference)       
+            self.logInfo("Cannot switch to frame " + frameReference) 
+            
+    def switchToLatestWindow(self, driver):
+        self.wait(1)
+        if driver != None:
+            driver.switch_to_window(self.Browser().window_handles[-1]) 
+   
     

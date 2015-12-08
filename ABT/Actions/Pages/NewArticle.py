@@ -72,6 +72,7 @@ class NewArticle(CommonActions, NewArticlePage):
             try:
                 driver.find_element_by_xpath(self.btnImage).click()
                 imgInsert = self.img.replace("$IMAGE NAME$", insert)
+                driver.switch_to_window()
                 driver.find_element_by_xpath("//input[@id = 'upload-submit']").click()
                 
               

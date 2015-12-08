@@ -4,20 +4,10 @@ Created on Dec 2, 2015
 @author: van.ngo
 '''
 from time import strftime, localtime
-
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support.select import Select
-from selenium.webdriver.support.wait import WebDriverWait
+from ABT.Modules.Common.ImportPages import ImportPages
 
 
-from ABT.Actions.Pages.NewArticle import NewArticle
-from ABT.Actions.Pages.ControlPanel import ControlPanel
-from ABT.Actions.Pages.Login import Login
-from ABT.Actions.Pages.ManagerArticle import ManagerArticle
-from ABT.Actions.CommonActions import CommonActions
-
-
-class TC02ArticleEdit(Login, ControlPanel, CommonActions, NewArticle, ManagerArticle):
+class TC02ArticleEdit():
     '''
     classdocs
     '''
@@ -27,11 +17,7 @@ class TC02ArticleEdit(Login, ControlPanel, CommonActions, NewArticle, ManagerArt
         '''
         Constructor
         '''
-        Login.__init__(self)
-        ControlPanel.__init__(self)
-        CommonActions.__init__(self)
-        NewArticle.__init__(self)
-        ManagerArticle.__init__(self)
+        ImportPages.__init__(self)
         self.title = "Article " + strftime("%Y-%m-%d %H:%M:%S", localtime())
         self.text = "This is an article"
         self.category = "Extensions"

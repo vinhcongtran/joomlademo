@@ -8,7 +8,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 from ABT.Interfaces.ControlPanelPage import ControlPanelPage
 
 
-
 class ControlPanel(ControlPanelPage):
     '''
     classdocs
@@ -20,6 +19,7 @@ class ControlPanel(ControlPanelPage):
         Constructor
         '''
         ControlPanelPage.__init__(self)
+
     
     def checkPageExist(self, driver):
         try:
@@ -41,7 +41,6 @@ class ControlPanel(ControlPanelPage):
             i +=1
             if i == n:
                 node = driver.find_element_by_xpath("//div[@id = 'module-menu']//a[text() = '" + path + "']")
-                ActionChains(driver).move_to_element(node).perform() 
                 node.click()
                 
         

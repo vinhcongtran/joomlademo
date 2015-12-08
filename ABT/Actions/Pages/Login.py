@@ -3,14 +3,12 @@ Created on Dec 1, 2015
 
 @author: van.ngo
 '''
-import time
-
-from selenium import webdriver
 
 from ABT.Interfaces.LoginPage import LoginPage
+from ABT.Modules.Common.Config import Config
 
 
-class Login(LoginPage):
+class Login(LoginPage, Config):
     '''
     classdocs
     '''
@@ -21,25 +19,9 @@ class Login(LoginPage):
         Constructor
         '''
         LoginPage.__init__(self)
+        Config.__init__(self)
 
-    ##############################################################################################################
-    # Open new browser
-    # @param driver: type of browser 
-    # @return browser object
-    ##############################################################################################################    
-    def openBrowser(self):
-        driver = webdriver.Firefox()
-        time.sleep(5)
-        return driver
-
-
-    ##############################################################################################################
-    # Navigate to a url
-    # @param driver: type of browser 
-    # @param url: the url expected to navigate
-    ##############################################################################################################    
-    def navigate(self, driver, url):
-        driver.get(url)
+   
         
     def enterUsername(self, driver, username):
         driver.find_element_by_xpath(self.txtUsername).send_keys(username)

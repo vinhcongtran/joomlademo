@@ -6,27 +6,30 @@ Created on Dec 1, 2015
 import selenium.common.exceptions
 
 from ABT.Interfaces.ManagerArticlePage import ManagerArticlePage
+from ABT.Actions.CommonActions import CommonActions
 
 
-class ManagerArticle(ManagerArticlePage):
+class ManagerArticle(ManagerArticlePage, CommonActions):
     '''
     classdocs
     '''
-
 
     def __init__(self):
         '''
         Constructor
         '''
         ManagerArticlePage.__init__(self)
-
+        CommonActions.__init__(self)
+        
+    
     ##############################################################################################################
     # Click a button on Toolbar
     # @param driver: type of browser 
     # @param button: button expected to click
     ##############################################################################################################
     def clickToolbarButton (self, driver, button):
-        driver.find_element_by_xpath(self.btn + button + "')]").click()
+        button = self.btn.replace("$BUTTON NAME$", button)
+        driver.find_element_by_xpath(button).click()
      
      
     ##############################################################################################################
@@ -34,9 +37,10 @@ class ManagerArticle(ManagerArticlePage):
     # @param driver: type of browser 
     # @param message: message expected to check
     ############################################################################################################## 
-    def checkSuccessMessage(self, driver, message):  
+    def checkMessageDisplay(self, driver, message):  
+        msg = self.msg.replace("$MESSAGE$", message)
         try:
-            driver.find_element_by_xpath(self.msgSuccess + message + "']")
+            driver.find_element_by_xpath(msg)
             print "\tPASSED : " + message + " message displays"
         except:
             print "FAILED : " + message + " message does not display"
@@ -49,13 +53,12 @@ class ManagerArticle(ManagerArticlePage):
     ##############################################################################################################    
     def checkArticleExist(self, driver, article):
         
-        ManagerArticle().checkSuccessMessage(driver, "Article successfully saved")
+        ManagerArticle().checkMessageDisplay(driver, "Article successfully saved")
             
-        exist = self.searchArticle(driver, article)
-        if (exist):
+        if (self.doesArticleExist(driver, article)):
             print "\tPASSED : " + article + " article exists on the articles table"
         else:
-            print "FAILED : '" + article + "' created article does not exist on the articles table"    
+            print "\tFAILED : '" + article + "' created article does not exist on the articles table"    
         
             
     ##############################################################################################################
@@ -68,20 +71,27 @@ class ManagerArticle(ManagerArticlePage):
         driver.find_element_by_xpath(self.txtSearch).clear()
         driver.find_element_by_xpath(self.txtSearch).send_keys(title)
         driver.find_element_by_xpath(self.btnSearch).click()
+
+        
+    def doesArticleExist(self, driver, title):
+        self.searchArticle(driver, title)
         try:
-            driver.find_element_by_xpath(self.rowArticle + title + "')]]")
-            return True;
+            article = self.rowArticle.replace("$ARTICLE$", title)
+            driver.find_element_by_xpath(article)
+            return True
         except selenium.common.exceptions.NoSuchElementException:
             print "The searched Article does not exist"
-            return False;
-    
+            return False
     
     ##############################################################################################################
     # Select on checkbox of the first article
     # @param driver: type of browser 
+    # @param article : article would like to check on
     ##############################################################################################################            
-    def selectFirstArticle (self, driver):
-        driver.find_element_by_xpath(self.cboFirstArticle).click()
+    def selectCheckboxArticle(self, driver, article):
+        chkArticle = self.chkArticle.replace("$ARTICLE$", article)
+        print chkArticle
+        driver.find_element_by_xpath(chkArticle).click()
 
 
     ##############################################################################################################
@@ -89,9 +99,10 @@ class ManagerArticle(ManagerArticlePage):
     # @param driver: type of browser 
     # @param title: title expected to delete
     ##############################################################################################################                
-    def deleteArticle(self, driver, title):
+    def moveArticleToTrash(self, driver, title):
         try:
-            if (ManagerArticle().searchArticle(driver, title)):
+            self.searchArticle(driver, title)
+            if (self.doesArticleExist(driver, title)):
                 ManagerArticle().selectFirstArticle(driver)
                 ManagerArticle().clickToolbarButton(driver, "Trash")
             else:
@@ -99,7 +110,17 @@ class ManagerArticle(ManagerArticlePage):
         except:
             print "Please create an article before deleting it"
         
-           
+    def checkDeletedArticle(self, driver, title):
+        #Verify the confirm message is displayed
+        self.checkMessageDisplay(driver, "1 article trashed.")
+        
+        #Verify the deleted article is displayed on the table grid
+        status = self.ddlStatus.replace("$ITEM NAME$", "Trashed")
+        driver.find_element_by_xpath(status).click()
+        self.checkTextContains(driver, title)
+        
+        
+        
     ##############################################################################################################
     # Check entered keywords be a part of displayed titles
     # @param driver: type of browser 
@@ -110,9 +131,33 @@ class ManagerArticle(ManagerArticlePage):
             table = driver.find_element_by_xpath("//table[@class = 'adminlist']//tbody")
             tablecontent = table.text
             if keywords in tablecontent:
-                print "\tPASSED: The titles of displayed articles are partially matched with the entered keyword"
-            return True;
+                print "\tPASSED: The " + keywords + "displays in the table"
         except:
-            print "\tFAILED: The titles of displayed articles are not partially matched with the entered keyword"
-            return False;
+            print "\tFAILED: The " + keywords + "does not display in the table"
 
+        
+    ##############################################################################################################
+    # Select the number of articles to display
+    # @param driver: type of browser 
+    # @param number: the number of articles want to display
+    ##############################################################################################################                                
+    def pagingArticle(self, driver, number):
+        try:
+            numberOfArticle = self.ddlDisplay.replace('$NUMBER OF ARTICLE$', "%s" %number)
+            driver.find_element_by_xpath(numberOfArticle).click()
+        except Exception, e:
+            print str(e)
+            self.logInfo("Cannot select %s" % number)
+            
+    def checkPagingArticle(self, driver, number):
+        tblArticleRow = self.tblArticle + "/tbody/tr"
+        rowCount = len(driver.find_elements_by_xpath(tblArticleRow))
+        self.verifyTrue(number == rowCount, "\tPASSED: The article table is paging into %s articles per page" %number, "\tFAILED: The article table is paging into %s articles per page instead of %s" %(rowCount,number))
+
+    
+    def checkAllArticleDisplay (self, driver):
+        exist = self.doesElementNotExisted(driver, self.barPage)
+        try:
+            self.verifyTrue(exist == False, "\tPASSED: All articles are displayed in one page" , "\tFAILED: All articles are not displayed in one page")
+        except Exception, e:
+            print str(e)

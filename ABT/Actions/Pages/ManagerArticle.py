@@ -67,12 +67,20 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
     # @param title: title expected to search
     ##############################################################################################################     
     def searchArticle(self, driver, title):
-        
-        driver.find_element_by_xpath(self.txtSearch).clear()
-        driver.find_element_by_xpath(self.txtSearch).send_keys(title)
-        driver.find_element_by_xpath(self.btnSearch).click()
-
-        
+        try:
+            driver.find_element_by_xpath(self.txtSearch).clear()
+            driver.find_element_by_xpath(self.txtSearch).send_keys(title)
+            driver.find_element_by_xpath(self.btnSearch).click()
+        except Exception,e:
+            print str(e)
+         
+            
+    ##############################################################################################################
+    # Check to see a article exist or not 
+    # @param driver: type of browser 
+    # @param title: title expected to search
+    # return : False if the article does not exist
+    ##############################################################################################################              
     def doesArticleExist(self, driver, title):
         self.searchArticle(driver, title)
         try:
@@ -90,7 +98,6 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
     ##############################################################################################################            
     def selectCheckboxArticle(self, driver, article):
         chkArticle = self.chkArticle.replace("$ARTICLE$", article)
-        print chkArticle
         driver.find_element_by_xpath(chkArticle).click()
 
 
@@ -103,21 +110,52 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
         try:
             self.searchArticle(driver, title)
             if (self.doesArticleExist(driver, title)):
-                ManagerArticle().selectFirstArticle(driver)
+                ManagerArticle().selectCheckboxArticle(driver, title)
                 ManagerArticle().clickToolbarButton(driver, "Trash")
             else:
-                "The article" + title + "does not exist to delete"
-        except:
-            print "Please create an article before deleting it"
-        
-    def checkDeletedArticle(self, driver, title):
+                "The article" + title + "does not exist to move to Trash"
+        except Exception, e:
+            print str(e)
+            print "Please create an article before moving it to Trash"
+
+
+    ##############################################################################################################
+    # Check a article moved to trash
+    # @param driver: type of browser 
+    # @param title: title expected to delete
+    ##############################################################################################################          
+    def checkArticleMovedToTrash(self, driver, title):
         #Verify the confirm message is displayed
         self.checkMessageDisplay(driver, "1 article trashed.")
         
-        #Verify the deleted article is displayed on the table grid
+        #Verify the trashed article is displayed on the table grid
         status = self.ddlStatus.replace("$ITEM NAME$", "Trashed")
         driver.find_element_by_xpath(status).click()
         self.checkTextContains(driver, title)
+    
+        
+    ##############################################################################################################
+    # Delete a article forever
+    # @param driver: type of browser 
+    # @param title: title expected to delete
+    ##############################################################################################################      
+    def deleteArticle(self, driver, title):
+        try:
+            self.searchArticle(driver, title)
+            if (self.doesArticleExist(driver, title)):
+                
+                self.moveArticleToTrash(driver, title)
+                
+                status = self.ddlStatus.replace("$ITEM NAME$", "Trashed")
+                driver.find_element_by_xpath(status).click()
+                
+                ManagerArticle().selectCheckboxArticle(driver, title)
+                ManagerArticle().clickToolbarButton(driver, "Empty trash")
+                
+            else:
+                "The article" + title + "does not exist to delete"
+        except Exception, e:
+            print str(e)
         
         
         
@@ -149,12 +187,21 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
             print str(e)
             self.logInfo("Cannot select %s" % number)
             
+            
+    ##############################################################################################################
+    # Check to see how many articles displayed after paging
+    # @param driver: type of browser 
+    # @param number: the number of articles is expected to display after paging
+    ##############################################################################################################          
     def checkPagingArticle(self, driver, number):
         tblArticleRow = self.tblArticle + "/tbody/tr"
         rowCount = len(driver.find_elements_by_xpath(tblArticleRow))
         self.verifyTrue(number == rowCount, "\tPASSED: The article table is paging into %s articles per page" %number, "\tFAILED: The article table is paging into %s articles per page instead of %s" %(rowCount,number))
 
-    
+    ##############################################################################################################
+    # Check to see if all articles display 
+    # @param driver: type of browser 
+    ##############################################################################################################           
     def checkAllArticleDisplay (self, driver):
         exist = self.doesElementNotExisted(driver, self.barPage)
         try:

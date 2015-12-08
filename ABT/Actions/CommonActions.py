@@ -56,11 +56,7 @@ class CommonActions(CommonUI,Config):
             print str(e) 
             self.logInfo("Open browser unsuccessfully")
             
-    ##############################################################################################################
-    # Navigate to a url
-    # @param driver: type of browser 
-    # @param url: the url expected to navigate
-    ##############################################################################################################    
+ 
     def navigate(self, driver, url):
         try:
             driver.implicitly_wait(self.cfTimeWait)
@@ -75,8 +71,6 @@ class CommonActions(CommonUI,Config):
         try:
             if expression == True:
                 self.logInfo(passMsg)
- 
-#                 unittest.TestCase.assertTrue(expression, failMsg)
             unittest.TestCase.assertTrue(self, expression, failMsg)
 
         except AssertionError, e:
@@ -102,7 +96,7 @@ class CommonActions(CommonUI,Config):
             self.logInfo("Cannot get element with xpath: " + xPath)
         return None
     
-    def doesElementNotExisted(self,driver, xPath, timeout = 5):
+    def doesElementNotExisted(self,driver, xPath, timeout = 3):
         try:
             WebDriverWait(driver, timeout).until_not(driver.find_element_by_xpath(xPath))
             return True
@@ -116,10 +110,11 @@ class CommonActions(CommonUI,Config):
         except Exception, e:
             print e
             self.logInfo("Cannot switch to frame " + frameReference) 
-            
-    def switchToLatestWindow(self, driver):
-        self.wait(1)
-        if driver != None:
-            driver.switch_to_window(self.Browser().window_handles[-1]) 
-   
+          
+    def switchToFrameByXpath(self, driver, xPath):
+        try:
+            driver.switch_to_frame(driver.find_element_by_xpath(xPath))
+        except Exception, e:
+            print e
+            self.logInfo("Cannot switch to frame using " + xPath)        
     

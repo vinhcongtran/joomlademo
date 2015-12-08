@@ -7,7 +7,8 @@ from time import strftime, localtime
 from ABT.Modules.Common.ImportPages import ImportPages
 
 
-class TC02ArticleEdit():
+
+class TC02ArticleEdit(ImportPages):
     '''
     classdocs
     '''

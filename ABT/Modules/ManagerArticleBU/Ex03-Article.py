@@ -31,6 +31,7 @@ class Ex03Article(unittest.TestCase, ImportPages):
 
     def tearDown(self):
         #End conditions
+        self.deleteArticle(self.browser, self.title)
         self.logOut(self.browser)
         self.browser.quit()
     
@@ -92,16 +93,20 @@ class Ex03Article(unittest.TestCase, ImportPages):
         #VP: 2. Created article is displayed on the articles table
         self.logInfo("Step 11 -  Verify the article is saved successfully ")  
         self.checkArticleExist(self.browser, self.title)  
+        
 if __name__ == '__main__':
 
-    tests = ["test_TC06ArticleAddImage"]
-   
-    for testcase  in tests:
+    tests = ['test_TC05ArticlePaging','test_TC06ArticleAddImage']
+    
+    for testcase in tests:
         suite = unittest.TestSuite()
         suite.addTest(Ex03Article(testcase))
-         
-#     dateTimeStamp = strftime("%Y%m%d %H%M%S", localtime())
-#     buf = file("D:\\Log\EX03TestReport" + "_" + dateTimeStamp + ".html", "wb")
-#     runner = HTMLTestRunner.HTMLTestRunner(stream=buf, title='Exercise 03 - Test Results', description='Article result')
-    runner = unittest.TextTestRunner()
-    runner.run(suite)
+        dateTimeStamp = strftime("%Y%m%d %H%M%S", localtime())
+        buf = file("D:\\Log\EX03TestReport" + "_" + dateTimeStamp + ".html", "wb")
+        runner = HTMLTestRunner.HTMLTestRunner(
+                            stream=buf,
+                            title=testcase + 'Exercise 03 - Test Results',
+                            description=testcase + ' result'
+                            )
+        
+        runner.run(suite)

@@ -3,9 +3,6 @@ Created on Dec 1, 2015
 
 @author: van.ngo
 '''
-
-from selenium.webdriver.remote.webelement import WebElement
-
 from ABT.Actions.CommonActions import CommonActions
 from ABT.Actions.Pages.ManagerArticle import ManagerArticle
 from ABT.Interfaces.NewArticlePage import NewArticlePage
@@ -69,22 +66,33 @@ class NewArticle(CommonActions, NewArticlePage):
         
         #Insert a image
         if (insert != None):
-            try:
+            self.insertImage(driver, insert)
+            
+            
+    ##############################################################################################################
+    # Insert an image into a article
+    # @param driver: type of browser 
+    # @param image: image expected to insert into a article
+    ##############################################################################################################                   
+    def insertImage (self, driver, image):
+        try:
                 driver.find_element_by_xpath(self.btnImage).click()
-                imgInsert = self.img.replace("$IMAGE NAME$", insert)
-                driver.switch_to_window()
-                driver.find_element_by_xpath("//input[@id = 'upload-submit']").click()
+                imgInsert = self.img.replace("$IMAGE NAME$", image)
                 
-              
-#                 driver.switch
-#                 driver.find_element_by_xpath(imgInsert).click()
-#                 driver.find_element_by_xpath(self.btnInsert).click()
-#                 driver.switch_to.default_content()
+                #switch to InsertAndUpload frame
+                self.switchToFrameByXpath(driver, self.frmInsertAndUpload)
+                #switch to Image frame
+                self.switchToFrameByXpath(driver, self.frmImageForm)
+                driver.find_element_by_xpath(imgInsert).click()
+                driver.switch_to.default_content()
+                
+                self.switchToFrameByXpath(driver, self.frmInsertAndUpload)
+                driver.find_element_by_xpath(self.btnInsert).click()
+                driver.switch_to.default_content()
 
-            except Exception,e:
+
+        except Exception,e:
                 print str(e)
-                
-                
 
     ##############################################################################################################
     # Edit an existing article
@@ -92,9 +100,13 @@ class NewArticle(CommonActions, NewArticlePage):
     # @param title, category, ..: information of the title edited
     ##############################################################################################################                
     def editArticle(self, driver, title, newtitle, newcategory, newtext, newoption):
+        #Search a article before editting
+        ManagerArticle().searchArticle(driver, title)
+        
         #select Article
         ManagerArticle().selectCheckboxArticle(driver, title)
         ManagerArticle().clickToolbarButton(driver, "Edit")
+        
         #Enter values to edit
         self.enterValue(driver, newtitle, newcategory, newtext)
         

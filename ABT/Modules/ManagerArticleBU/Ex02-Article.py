@@ -32,6 +32,7 @@ class Ex02Article(unittest.TestCase, ImportPages):
 
     def tearDown(self):
         #End conditions
+        self.deleteArticle(self.browser, self.title)
         self.logOut(self.browser)
         self.browser.quit()
     
@@ -55,14 +56,14 @@ class Ex02Article(unittest.TestCase, ImportPages):
         self.logInfo("Step 8 -  Select an item from the 'Category' dropdown list ")
         self.logInfo("Step 9 -  Enter value on 'Article Text' text area ")
         self.logInfo("Step 10 -  Click on 'Save & Close' icon of the top right toolbar ")
-        self.createNewArticleByButtonByButtonByButton(self.browser, self.title, self.category, self.text, self.option)
+        self.createNewArticleByButton(self.browser, self.title, self.category, self.text, self.option)
           
         #VP: 1. "Article successfully saved" message is displayed
         #VP: 2. Created article is displayed on the articles table
         self.logInfo("Step 11 -  Verify the article is saved successfully ")  
         self.checkArticleExist(self.browser, self.title)
     
-    
+
     def test_TC02ArticleEdit(self):
         # Main steps
         # Open browser
@@ -84,7 +85,7 @@ class Ex02Article(unittest.TestCase, ImportPages):
         self.logInfo("Step 8 -  Select an item from the 'Category' dropdown list ")
         self.logInfo("Step 9 -  Enter value on 'Article Text' text area ")
         self.logInfo("Step 10 -  Click on 'Save & Close' icon of the top right toolbar ")
-        self.createNewArticleByButtonByButton(self.browser, self.title, self.category, self.text, self.option)
+        self.createNewArticleByButton(self.browser, self.title, self.category, self.text, self.option)
           
         #VP: 1. "Article successfully saved" message is displayed
         #VP: 2. Created article is displayed on the articles table
@@ -130,7 +131,7 @@ class Ex02Article(unittest.TestCase, ImportPages):
         self.logInfo("Step 9 -  Select 'Published' item from 'Status' dropdown list ")
         self.logInfo("Step 10 -  Enter value on 'Article Text' text area ")
         self.logInfo("Step 11 -  Click on 'Save & Close' icon of the top right toolbar ")
-        self.createNewArticleByButtonByButton(self.browser, self.title, self.category, self.text, self.option)
+        self.createNewArticleByButton(self.browser, self.title, self.category, self.text, self.option)
           
         #VP: 1. "Article successfully saved" message is displayed
         #VP: 2. Created article is displayed on the articles table
@@ -144,7 +145,7 @@ class Ex02Article(unittest.TestCase, ImportPages):
         self.logInfo("Step 15 - Verify the confirm message is displayed")
         self.logInfo("Step 16 - Select 'Trash' item of 'Status' dropdown list")
         self.logInfo("Step 17 - Verify the deleted article is displayed on the table grid")
-        self.checkDeletedArticle(self.browser, self.title)
+        self.checkArticleMovedToTrash(self.browser, self.title)
         
     
     def test_TO04ArticleSearch(self):
@@ -193,14 +194,6 @@ if __name__ == '__main__':
         suite = unittest.TestSuite()
         suite.addTest(Ex02Article(testcase))
         buf = file("D:\\testcase01.html",'wb')
-        runner = HTMLTestRunner.HTMLTestRunner(stream=buf, title='TC01 - Test Results', description='Article result')
-        runner = unittest.TextTestRunner()
+        runner = HTMLTestRunner.HTMLTestRunner(stream=buf, title='Ex02 - Test Results', description='Article result')
         runner.run(suite)
-#     suite.addTest(TC01ArticleCreate('test_TC02ArticleEdit'))
-
-#     runner = unittest.TextTestRunner()
-#     runner.run(suite)
-#     unittest.main(suite)
-#     buf = file("D:\\testcase01.html",'wb')
-#     runner = HTMLTestRunner.HTMLTestRunner(stream=buf, title='TC01 - Test Results', description='Article result')
-#     runner.run(suite)
+        

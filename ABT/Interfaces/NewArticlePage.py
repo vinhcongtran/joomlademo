@@ -20,5 +20,8 @@ class NewArticlePage():
         self.btnToolbarBox = "//div[@id = 'toolbar']//li[@id = 'toolbar-save']//a[normalize-space() = '$TOOLBAR BUTTON NAME$']"
         self.ddlStatus = "//select[@id='jform_state']/option[contains(.,'$STATUS ITEM$')]"
         self.btnImage = "//a[text() = 'Image']"
-        self.img = "//div[@class = 'manager']//a[@title = '$IMAGE NAME$']"
+        self.img = "//a[@title = '$IMAGE NAME$']"
         self.btnInsert = "//button[text() = 'Insert']"
+        self.frmInsertAndUpload ="//div[@id = 'sbox-window']//iframe"
+        self.frmImageForm = "//iframe[@name ='imageframe']"
+        

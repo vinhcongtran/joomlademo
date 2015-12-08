@@ -193,7 +193,13 @@ if __name__ == '__main__':
     for testcase  in tests:
         suite = unittest.TestSuite()
         suite.addTest(Ex02Article(testcase))
-        buf = file("D:\\testcase01.html",'wb')
-        runner = HTMLTestRunner.HTMLTestRunner(stream=buf, title='Ex02 - Test Results', description='Article result')
-        runner.run(suite)
+        
+    dateTimeStamp = strftime("%Y%m%d %H%M%S", localtime())  
+    buf = file("D:\\Log\EX02TestReport" + "_" + dateTimeStamp + ".html", "wb")
+    runner = HTMLTestRunner.HTMLTestRunner(
+                            stream=buf,
+                            title=testcase + 'Exercise 02 - Test Results',
+                            description=testcase + ' result'
+                            )
+    runner.run(suite)
         

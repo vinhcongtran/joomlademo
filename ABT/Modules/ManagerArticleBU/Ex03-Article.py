@@ -96,17 +96,18 @@ class Ex03Article(unittest.TestCase, ImportPages):
         
 if __name__ == '__main__':
 
-    tests = ['test_TC05ArticlePaging','test_TC06ArticleAddImage']
+    tests = ["test_TC05ArticlePaging","test_TC06ArticleAddImage"]
     
     for testcase in tests:
         suite = unittest.TestSuite()
         suite.addTest(Ex03Article(testcase))
-        dateTimeStamp = strftime("%Y%m%d %H%M%S", localtime())
-        buf = file("D:\\Log\EX03TestReport" + "_" + dateTimeStamp + ".html", "wb")
-        runner = HTMLTestRunner.HTMLTestRunner(
+        
+    dateTimeStamp = strftime("%Y%m%d %H%M%S", localtime())
+    buf = file("D:\\Log\EX03TestReport" + "_" + dateTimeStamp + ".html", "wb")
+    runner = HTMLTestRunner.HTMLTestRunner(
                             stream=buf,
                             title=testcase + 'Exercise 03 - Test Results',
                             description=testcase + ' result'
                             )
         
-        runner.run(suite)
+    runner.run(suite)

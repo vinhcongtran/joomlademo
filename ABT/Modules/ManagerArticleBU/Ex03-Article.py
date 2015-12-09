@@ -98,6 +98,7 @@ class Ex03Article(unittest.TestCase, ImportPages):
 if __name__ == '__main__':
 
     tests = ["test_TC05ArticlePaging","test_TC06ArticleAddImage"]
+
     suite = unittest.TestSuite(map(Ex03Article, tests))
 
     runner = TextTestRunner()

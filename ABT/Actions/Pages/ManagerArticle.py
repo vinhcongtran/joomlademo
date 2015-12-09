@@ -141,18 +141,26 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
     ##############################################################################################################      
     def deleteArticle(self, driver, title):
         try:
-            self.searchArticle(driver, title)
-            if (self.doesArticleExist(driver, title)):
-                
-                self.moveArticleToTrash(driver, title)
-                
-                status = self.ddlStatus.replace("$ITEM NAME$", "Trashed")
-                driver.find_element_by_xpath(status).click()
-                
+            existInTrash = self.DoesArticleMoveToTrash(driver, title)
+            if existInTrash == True:
                 ManagerArticle().selectCheckboxArticle(driver, title)
                 ManagerArticle().clickToolbarButton(driver, "Empty trash")
-                
-            self.logInfo("=========Cleared test environment===========")
+                self.logInfo("=========Cleared test environment===========")
+            else:
+                status = self.ddlStatus.replace("$ITEM NAME$", "All")
+                driver.find_element_by_xpath(status).click()
+                self.searchArticle(driver, title)
+                if (self.doesArticleExist(driver, title)):
+                    
+                    self.moveArticleToTrash(driver, title)
+                    
+                    status = self.ddlStatus.replace("$ITEM NAME$", "Trashed")
+                    driver.find_element_by_xpath(status).click()
+                    
+                    ManagerArticle().selectCheckboxArticle(driver, title)
+                    ManagerArticle().clickToolbarButton(driver, "Empty trash")
+                    
+                self.logInfo("=========Cleared test environment===========")
         except Exception, e:
             print str(e)
         
@@ -207,3 +215,17 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
             self.verifyTrue(exist == False, "\tPASSED: All articles are displayed in one page" , "\tFAILED: All articles are not displayed in one page")
         except Exception, e:
             print str(e)
+
+    def DoesArticleMoveToTrash(self, driver, title):
+        status = self.ddlStatus.replace("$ITEM NAME$", "Trashed")
+        driver.find_element_by_xpath(status).click()
+        try:
+            table = driver.find_element_by_xpath("//table[@class = 'adminlist']//tbody")
+            tablecontent = table.text
+            if title in tablecontent:
+                return True
+            else:
+                return False   
+        except Exception,e:
+            print str(e)
+                

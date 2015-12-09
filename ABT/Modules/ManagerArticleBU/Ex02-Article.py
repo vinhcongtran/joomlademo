@@ -189,7 +189,8 @@ class Ex02Article(unittest.TestCase, ImportPages):
     
 if __name__ == '__main__':
     
-    tests = ["test_TC01ArticleCreate","test_TC02ArticleEdit", "test_TC03ArticleDelete", "test_TO04ArticleSearch"]
+#     tests = ["test_TC01ArticleCreate","test_TC02ArticleEdit", "test_TC03ArticleDelete", "test_TO04ArticleSearch"]
+    tests = ["test_TC01ArticleCreate", "test_TC03ArticleDelete"]
     suite = unittest.TestSuite(map(Ex02Article, tests))
     runner = TextTestRunner()
     runner.run(suite)

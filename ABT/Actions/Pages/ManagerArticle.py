@@ -141,26 +141,35 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
     ##############################################################################################################      
     def deleteArticle(self, driver, title):
         try:
-            existInTrash = self.DoesArticleMoveToTrash(driver, title)
-            if existInTrash == True:
-                ManagerArticle().selectCheckboxArticle(driver, title)
-                ManagerArticle().clickToolbarButton(driver, "Empty trash")
-                self.logInfo("=========Cleared test environment===========")
-            else:
-                status = self.ddlStatus.replace("$ITEM NAME$", "All")
-                driver.find_element_by_xpath(status).click()
-#                 self.searchArticle(driver, title)
+#             existInTrash = self.DoesArticleMoveToTrash(driver, title)
+#             if existInTrash == True:
+#                 ManagerArticle().selectCheckboxArticle(driver, title)
+#                 ManagerArticle().clickToolbarButton(driver, "Empty trash")
+#                 self.logInfo("=========Cleared test environment===========")
+#             else:
+#                 status = self.ddlStatus.replace("$ITEM NAME$", "All")
+#                 driver.find_element_by_xpath(status).click()
+# 
                 if (self.doesArticleExist(driver, title)):
+                    existInTrash = self.DoesArticleMoveToTrash(driver, title)
+                    if existInTrash == True:
+                        ManagerArticle().selectCheckboxArticle(driver, title)
+                        ManagerArticle().clickToolbarButton(driver, "Empty trash")
+                        self.logInfo("=========Cleared test environment===========")
+                        
+                    else:
+                        status = self.ddlStatus.replace("$ITEM NAME$", "All")
+                        driver.find_element_by_xpath(status).click()
+                
+                        self.moveArticleToTrash(driver, title)
                     
-                    self.moveArticleToTrash(driver, title)
+                        status = self.ddlStatus.replace("$ITEM NAME$", "Trashed")
+                        driver.find_element_by_xpath(status).click()
                     
-                    status = self.ddlStatus.replace("$ITEM NAME$", "Trashed")
-                    driver.find_element_by_xpath(status).click()
-                    
-                    ManagerArticle().selectCheckboxArticle(driver, title)
-                    ManagerArticle().clickToolbarButton(driver, "Empty trash")
-                    
-                self.logInfo("=========Cleared test environment===========")
+                        ManagerArticle().selectCheckboxArticle(driver, title)
+                        ManagerArticle().clickToolbarButton(driver, "Empty trash")    
+                        self.logInfo("=========Cleared test environment===========")
+                return None
         except Exception, e:
             print str(e)
         

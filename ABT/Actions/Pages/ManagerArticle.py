@@ -88,7 +88,6 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
             driver.find_element_by_xpath(article)
             return True
         except Exception,e:
-            print str(e)
             return False
     
     ##############################################################################################################
@@ -169,6 +168,7 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
                         ManagerArticle().selectCheckboxArticle(driver, title)
                         ManagerArticle().clickToolbarButton(driver, "Empty trash")    
                         self.logInfo("=========Cleared test environment===========")
+                self.logInfo("=========Cleared test environment===========")   
                 return None
         except Exception, e:
             print str(e)

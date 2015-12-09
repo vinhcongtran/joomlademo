@@ -149,7 +149,7 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
             else:
                 status = self.ddlStatus.replace("$ITEM NAME$", "All")
                 driver.find_element_by_xpath(status).click()
-                self.searchArticle(driver, title)
+#                 self.searchArticle(driver, title)
                 if (self.doesArticleExist(driver, title)):
                     
                     self.moveArticleToTrash(driver, title)

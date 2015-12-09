@@ -5,7 +5,7 @@ Created on Dec 8, 2015
 '''
 from time import strftime, localtime
 import unittest
-import HTMLTestRunner
+from unittest.runner import TextTestRunner
 from ABT.Modules.Common.ImportPages import ImportPages
 
 
@@ -188,18 +188,9 @@ class Ex02Article(unittest.TestCase, ImportPages):
         self.checkTextContains(self.browser, self.title)
     
 if __name__ == '__main__':
-    tests = ["test_TC01ArticleCreate","test_TC02ArticleEdit", "test_TC03ArticleDelete", "test_TO04ArticleSearch"]
-   
-    for testcase  in tests:
-        suite = unittest.TestSuite()
-        suite.addTest(Ex02Article(testcase))
-        
-    dateTimeStamp = strftime("%Y%m%d %H%M%S", localtime())  
-    buf = file("D:\\Log\EX02TestReport" + "_" + dateTimeStamp + ".html", "wb")
-    runner = HTMLTestRunner.HTMLTestRunner(
-                            stream=buf,
-                            title=testcase + 'Exercise 02 - Test Results',
-                            description=testcase + ' result'
-                            )
+    
+#     tests = ["test_TC01ArticleCreate","test_TC02ArticleEdit", "test_TC03ArticleDelete", "test_TO04ArticleSearch"]
+    tests = ["test_TC03ArticleDelete"]
+    suite = unittest.TestSuite(map(Ex02Article, tests))
+    runner = TextTestRunner()
     runner.run(suite)
-        

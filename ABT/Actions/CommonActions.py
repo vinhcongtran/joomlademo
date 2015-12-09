@@ -48,13 +48,13 @@ class CommonActions(CommonUI,Config):
     def openBrowser(self):
         try:
             driver = webdriver.Firefox()
-            self.logInfo("Open browser successfully")
+            self.logInfo("==========Open browser successfully, Begin running ===============")
             driver.maximize_window()
             driver.set_page_load_timeout(self.cfTimeWait)
             return driver
         except Exception, e:
             print str(e) 
-            self.logInfo("Open browser unsuccessfully")
+            self.logInfo("\nOpen browser unsuccessfully")
             
  
     def navigate(self, driver, url):

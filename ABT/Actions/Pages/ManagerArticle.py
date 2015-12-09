@@ -87,8 +87,8 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
             article = self.rowArticle.replace("$ARTICLE$", title)
             driver.find_element_by_xpath(article)
             return True
-        except selenium.common.exceptions.NoSuchElementException:
-            print "The searched Article does not exist"
+        except Exception,e:
+            print str(e)
             return False
     
     ##############################################################################################################
@@ -152,8 +152,7 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
                 ManagerArticle().selectCheckboxArticle(driver, title)
                 ManagerArticle().clickToolbarButton(driver, "Empty trash")
                 
-            else:
-                "The article" + title + "does not exist to delete"
+            self.logInfo("=========Cleared test environment===========")
         except Exception, e:
             print str(e)
         

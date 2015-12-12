@@ -27,7 +27,7 @@ class Ex03Article(unittest.TestCase, ImportPages):
         self.option = "Save & Close"
         self.status = None
         self.imgInsert = "powered_by.png"
-        self.browser = None
+        self.browser = self.openBrowser()
 
 
     def tearDown(self):
@@ -37,9 +37,7 @@ class Ex03Article(unittest.TestCase, ImportPages):
         self.browser.quit()
     
     def test_TC05ArticlePaging(self):
-        # Main steps
-        self.browser = self.openBrowser()
-        
+        # Main steps 
         self.logInfo("Step 1 - Navigate to Joomla administrator admin page")
         self.browser = self.navigate(self.browser, self.joomlaUrl)
            
@@ -52,14 +50,14 @@ class Ex03Article(unittest.TestCase, ImportPages):
         self.navigateMenu(self.browser, "Content>Article Manager")
   
         self.logInfo("Step 6 -  Select '5' item of the 'Display' dropdown list at the footer section of the article table ")
-        self.pagingArticle(self.browser, '5')
+        self.pageArticles(self.browser, '5')
         
         #VP: 1. "Article successfully saved" message is displayed
         self.logInfo("Step 7 -  Verify the article table is paging into 5 articles per page ")
         self.checkPagingArticle(self.browser, 5)
         
         self.logInfo("Step 8 -  Select 'All' item of the 'Display' dropdown list at the footer section of the article table")
-        self.pagingArticle(self.browser, 'All')
+        self.pageArticles(self.browser, 'All')
         
         #VP: 2. Created article is displayed on the articles table
         self.logInfo("Step 9 -  Verify all articles are displayed in one page ")
@@ -67,8 +65,6 @@ class Ex03Article(unittest.TestCase, ImportPages):
         
     def test_TC06ArticleAddImage(self):
         # Main steps
-        self.browser = self.openBrowser()
-        
         self.logInfo("Step 1 - Navigate to Joomla administrator admin page")
         self.browser = self.navigate(self.browser, self.joomlaUrl)
            
@@ -93,13 +89,22 @@ class Ex03Article(unittest.TestCase, ImportPages):
         #VP: 1. "Article successfully saved" message is displayed
         #VP: 2. Created article is displayed on the articles table
         self.logInfo("Step 11 -  Verify the article is saved successfully ")  
-        self.checkArticleExist(self.browser, self.title)  
+        self.checkMessageDisplay(self.browser, "Article successfully saved")
+        self.checkArticleCreated(self.browser, self.title)
         
 if __name__ == '__main__':
 
     tests = ["test_TC05ArticlePaging","test_TC06ArticleAddImage"]
-
+    dateTime = strftime("%Y%m%d%H%M%S", localtime())
     suite = unittest.TestSuite(map(Ex03Article, tests))
-
-    runner = TextTestRunner()
+        
+    print "=========================BEGIN TEST CASE========================="
+    dateTime = strftime("%Y%m%d%H%M%S", localtime())
+    buf = file("D:\\Log\EX03TestReport" + "_" + dateTime + ".html", "wb")
+    runner = HTMLTestRunner.HTMLTestRunner(
+                    stream=buf,
+                    title=' Ex03- Test Results',
+                    description= 'Ex03- results'
+                    )
     runner.run(suite)
+    print "=========================END TEST CASE========================="

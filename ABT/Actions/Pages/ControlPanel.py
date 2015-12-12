@@ -27,7 +27,12 @@ class ControlPanel(ControlPanelPage):
             print "The Control Panel page is displayed"
         except:
             print "The Control Panel page isn't displayed"
-            
+    
+    ##############################################################################################################
+    # Navigate to a page by clicking on a menu item
+    # @param driver: type of browser
+    # @param path: path of menu item, menu items separates to each other by '>' (e.g.: Content>Article Manager)
+    ##############################################################################################################       
     def navigateMenu(self, driver, path):
         i = 0
         n = path.count(">")

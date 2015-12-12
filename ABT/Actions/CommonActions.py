@@ -66,7 +66,30 @@ class CommonActions(CommonUI,Config):
         except Exception, e:
             print str(e)
             self.logInfo("Navigate to %s unsuccessfully" % url)
-    
+            
+    ##############################################################################################################
+    # verify In
+    # @param member: The value want to check in container
+    # @param container: The container value
+    # @param passMsg: Pass message
+    # @param failMsg: Fail message
+    ##############################################################################################################
+    def verifyIn(self, member, container, passMsg, failMsg):
+        try:
+            if member in container:
+                self.logInfo(passMsg)
+ 
+            self.assertIn(member, container, failMsg)
+                 
+        except Exception, e:
+            self.logInfo(str(e))
+
+    ##############################################################################################################
+    # verify True expression
+    # @param expression: True/False
+    # @param passMsg: Pass message
+    # @param failMsg: Fail message
+    ##############################################################################################################
     def verifyTrue(self, expression, passMsg, failMsg):
         try:
             if expression == True:
@@ -84,7 +107,7 @@ class CommonActions(CommonUI,Config):
             return status
         except Exception, e:
             self.logInfo(str(e))
-        return None
+            return None
         
     def getElementByXPath(self, driver,  xPath):
         element = None
@@ -116,5 +139,7 @@ class CommonActions(CommonUI,Config):
             driver.switch_to_frame(driver.find_element_by_xpath(xPath))
         except Exception, e:
             print e
-            self.logInfo("Cannot switch to frame using " + xPath)        
+            self.logInfo("Cannot switch to frame using " + xPath)    
+            
+                
     

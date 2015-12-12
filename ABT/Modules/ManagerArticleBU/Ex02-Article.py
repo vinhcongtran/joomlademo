@@ -5,7 +5,7 @@ Created on Dec 8, 2015
 '''
 from time import strftime, localtime
 import unittest
-from unittest.runner import TextTestRunner
+import HTMLTestRunner
 from ABT.Modules.Common.ImportPages import ImportPages
 
 
@@ -24,11 +24,12 @@ class Ex02Article(unittest.TestCase, ImportPages):
         self.text = "This is an article"
         self.category = "Extensions"
         self.option = "Save & Close"
-        self.browser = None
+        self.browser = self.openBrowser()
         
         self.newtitle = "Edit Article " + strftime("%Y-%m-%d %H:%M:%S", localtime())
         self.newcategory = "Components"
         self.newtext = "This is an article after editing"
+        
 
     def tearDown(self):
         #End conditions
@@ -37,9 +38,7 @@ class Ex02Article(unittest.TestCase, ImportPages):
         self.browser.quit()
     
     def test_TC01ArticleCreate(self):
-        # Main steps
-        self.browser = self.openBrowser()
-        
+        # Main steps 
         self.logInfo("Step 1 - Navigate to Joomla administrator admin page")
         self.browser = self.navigate(self.browser, self.joomlaUrl)
            
@@ -61,14 +60,12 @@ class Ex02Article(unittest.TestCase, ImportPages):
         #VP: 1. "Article successfully saved" message is displayed
         #VP: 2. Created article is displayed on the articles table
         self.logInfo("Step 11 -  Verify the article is saved successfully ")  
-        self.checkArticleExist(self.browser, self.title)
+        self.checkMessageDisplay(self.browser, "Article successfully saved")
+        self.checkArticleCreated(self.browser, self.title)
     
 
     def test_TC02ArticleEdit(self):
-        # Main steps
-        # Open browser
-        self.browser = self.openBrowser()
-           
+        # Main steps     
         self.logInfo("Step 1 - Navigate to Joomla administrator admin page")
         self.navigate(self.browser, self.joomlaUrl)
            
@@ -90,7 +87,8 @@ class Ex02Article(unittest.TestCase, ImportPages):
         #VP: 1. "Article successfully saved" message is displayed
         #VP: 2. Created article is displayed on the articles table
         self.logInfo("Step 11 -  Verify the article is saved successfully ")  
-        self.checkArticleExist(self.browser, self.title)
+        self.checkMessageDisplay(self.browser, "Article successfully saved")
+        self.checkArticleCreated(self.browser, self.title)
         
         self.logInfo("Step 12 -  Select Content > Article Manager ")    
         self.navigateMenu(self.browser, "Content>Article Manager")  
@@ -107,12 +105,11 @@ class Ex02Article(unittest.TestCase, ImportPages):
         #VP: 3. "Article successfully saved" message is displayed
         #VP: 4. Edited article is displayed on the articles table
         self.logInfo("Step 19 -  Verify the article is saved successfully ")  
-        self.checkArticleExist(self.browser, self.newtitle)
+        self.checkMessageDisplay(self.browser, "Article successfully saved")
+        self.checkArticleEdited(self.browser, self.newtitle)
           
     def test_TC03ArticleDelete(self):
         # Main steps
-        # Open browser
-        self.browser = self.openBrowser()
           
         self.logInfo("Step 1 - Navigate to Joomla administrator admin page")
         self.navigate(self.browser, self.joomlaUrl)
@@ -136,7 +133,8 @@ class Ex02Article(unittest.TestCase, ImportPages):
         #VP: 1. "Article successfully saved" message is displayed
         #VP: 2. Created article is displayed on the articles table
         self.logInfo("Step 12 -  Verify the article is saved successfully")  
-        self.checkArticleExist(self.browser, self.title)
+        self.checkMessageDisplay(self.browser, "Article successfully saved")
+        self.checkArticleCreated(self.browser, self.title)
         
         self.logInfo("Step 13 -  Check on the recently added article's checkbox ")   
         self.logInfo("Step 14 -  Click on 'Trash' icon of the top right toolbar ")   
@@ -144,16 +142,17 @@ class Ex02Article(unittest.TestCase, ImportPages):
         
         self.logInfo("Step 15 - Verify the confirm message is displayed")
         self.logInfo("Step 16 - Select 'Trash' item of 'Status' dropdown list")
+        
+        #VP: 1. "Article successfully saved" message is displayed
+        #VP: 2. Trashed article is displayed on the articles table
         self.logInfo("Step 17 - Verify the deleted article is displayed on the table grid")
+        self.checkMessageDisplay(self.browser, "1 article trashed.")
         self.checkArticleMovedToTrash(self.browser, self.title)
         
     
     def test_TO04ArticleSearch(self):
         
         # Main steps
-        # Open browser
-        self.browser = self.openBrowser()
-          
         self.logInfo("Step 1 - Navigate to Joomla administrator admin page")
         self.navigate(self.browser, self.joomlaUrl)
           
@@ -177,7 +176,8 @@ class Ex02Article(unittest.TestCase, ImportPages):
         #VP: 1. "Article successfully saved" message is displayed
         #VP: 2. Created article is displayed on the articles table
         self.logInfo("Step 12 -  Verify the article is saved successfully ")  
-        self.checkArticleExist(self.browser, self.title)
+        self.checkMessageDisplay(self.browser, "Article successfully saved")
+        self.checkArticleCreated(self.browser, self.title)
  
         self.logInfo("Step 13 -  Search the recent created article ") 
         self.logInfo("Step 14 -  Click on 'Search' button ") 
@@ -190,7 +190,17 @@ class Ex02Article(unittest.TestCase, ImportPages):
 if __name__ == '__main__':
     
     tests = ["test_TC01ArticleCreate","test_TC02ArticleEdit", "test_TC03ArticleDelete", "test_TO04ArticleSearch"]
-
+    dateTime = strftime("%Y%m%d%H%M%S", localtime())
     suite = unittest.TestSuite(map(Ex02Article, tests))
-    runner = TextTestRunner()
+        
+    print "=========================BEGIN TEST CASE========================="
+    dateTime = strftime("%Y%m%d%H%M%S", localtime())
+    buf = file("D:\\Log\EX02TestReport" + "_" + dateTime + ".html", "wb")
+    runner = HTMLTestRunner.HTMLTestRunner(
+                    stream=buf,
+                    title=' Ex02- Test Results',
+                    description= 'Ex02 - results'
+                    )
     runner.run(suite)
+    print "=========================END TEST CASE========================="
+                    

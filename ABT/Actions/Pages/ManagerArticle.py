@@ -28,7 +28,7 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
     # @param button: button expected to click
     ##############################################################################################################
     def clickToolbarButton (self, driver, button):
-        button = self.btn.replace("$BUTTON NAME$", button)
+        button = self.btnToolBar.replace("$BUTTON NAME$", button)
         driver.find_element_by_xpath(button).click()
      
      
@@ -38,12 +38,8 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
     # @param message: message expected to check
     ############################################################################################################## 
     def checkMessageDisplay(self, driver, message):  
-        msg = self.msg.replace("$MESSAGE$", message)
-        try:
-            driver.find_element_by_xpath(msg)
-            print "\tPASSED : " + message + " message displays"
-        except:
-            print "FAILED : " + message + " message does not display"
+        msg = self.lblMessage.replace("$MESSAGE$", message)
+        self.verifyTrue(self.doesElementDisplay(driver, msg), "\tPASSED : " + message + " message displays", "FAILED : " + message + " message does not display")
         
           
     ##############################################################################################################
@@ -51,15 +47,17 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
     # @param driver: type of browser 
     # @param article: article expected to check
     ##############################################################################################################    
-    def checkArticleExist(self, driver, article):
-        
-        ManagerArticle().checkMessageDisplay(driver, "Article successfully saved")
+    def checkArticleCreated(self, driver, article):       
+            self.verifyTrue(self.doesArticleExist(driver, article) == True, "\tPASSED : the created '" + article + "' article exists on the articles table", "\tFAILED : the created '" + article + "' article does not exist on the articles table"  )
             
-        if (self.doesArticleExist(driver, article)):
-            print "\tPASSED : " + article + " article exists on the articles table"
-        else:
-            print "\tFAILED : '" + article + "' created article does not exist on the articles table"    
-        
+            
+    ##############################################################################################################
+    # Check an existing article edited 
+    # @param driver: type of browser 
+    # @param article: article expected to check
+    ##############################################################################################################    
+    def checkArticleEdited(self, driver, article):       
+            self.verifyTrue(self.doesArticleExist(driver, article) == True, "\tPASSED : the edited '" + article + "' article exists on the articles table", "\tFAILED : the edited '" + article + "' article does not exist on the articles table"  )
             
     ##############################################################################################################
     # Search an article by title 
@@ -87,7 +85,7 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
             article = self.rowArticle.replace("$ARTICLE$", title)
             driver.find_element_by_xpath(article)
             return True
-        except Exception,e:
+        except:
             return False
     
     ##############################################################################################################
@@ -124,9 +122,6 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
     # @param title: title expected to delete
     ##############################################################################################################          
     def checkArticleMovedToTrash(self, driver, title):
-        #Verify the confirm message is displayed
-        self.checkMessageDisplay(driver, "1 article trashed.")
-        
         #Verify the trashed article is displayed on the table grid
         status = self.ddlStatus.replace("$ITEM NAME$", "Trashed")
         driver.find_element_by_xpath(status).click()
@@ -140,15 +135,6 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
     ##############################################################################################################      
     def deleteArticle(self, driver, title):
         try:
-#             existInTrash = self.DoesArticleMoveToTrash(driver, title)
-#             if existInTrash == True:
-#                 ManagerArticle().selectCheckboxArticle(driver, title)
-#                 ManagerArticle().clickToolbarButton(driver, "Empty trash")
-#                 self.logInfo("=========Cleared test environment===========")
-#             else:
-#                 status = self.ddlStatus.replace("$ITEM NAME$", "All")
-#                 driver.find_element_by_xpath(status).click()
-# 
                 if (self.doesArticleExist(driver, title)):
                     existInTrash = self.DoesArticleMoveToTrash(driver, title)
                     if existInTrash == True:
@@ -168,7 +154,8 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
                         ManagerArticle().selectCheckboxArticle(driver, title)
                         ManagerArticle().clickToolbarButton(driver, "Empty trash")    
                         self.logInfo("=========Cleared test environment===========")
-                self.logInfo("=========Cleared test environment===========")   
+                else:
+                    self.logInfo("=========Cleared test environment===========")   
                 return None
         except Exception, e:
             print str(e)
@@ -176,26 +163,38 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
         
         
     ##############################################################################################################
-    # Check entered keywords be a part of displayed titles
+    # Check entered keywords contained in displayed titles
     # @param driver: type of browser 
     # @param keywords: keywords expected to be a parts of displayed titles
     ##############################################################################################################                         
     def checkTextContains(self, driver, keywords):
-        try:
-            table = driver.find_element_by_xpath("//table[@class = 'adminlist']//tbody")
+            table = driver.find_element_by_xpath(self.tblArticle)
             tablecontent = table.text
-            if keywords in tablecontent:
-                print "\tPASSED: The " + keywords + "displays in the table"
-        except:
-            print "\tFAILED: The " + keywords + "does not display in the table"
+            self.verifyIn(keywords, tablecontent, "\tPASSED: The " + keywords + "displays in the table", "\tFAILED: The " + keywords + "does not display in the table")
 
-        
+    ##############################################################################################################
+    # Check to see if a text is contained in a table finding by xpath
+    # @param driver: type of browser 
+    # @param text: keywords expected to be a parts of displayed titles
+    # @param xPathTable: it should be a xPath of table
+    # Return True if the text contains in table, False if it does not contain in table
+    ##############################################################################################################                         
+    def DoesTextContains(self, driver, text, xPathTable):
+        try:
+            table = driver.find_element_by_xpath(xPathTable)
+            tablecontent = table.text
+            if text in tablecontent:
+                return True
+            else:
+                return False   
+        except Exception,e:
+            print str(e)
     ##############################################################################################################
     # Select the number of articles to display
     # @param driver: type of browser 
     # @param number: the number of articles want to display
     ##############################################################################################################                                
-    def pagingArticle(self, driver, number):
+    def pageArticles(self, driver, number):
         try:
             numberOfArticle = self.ddlDisplay.replace('$NUMBER OF ARTICLE$', "%s" %number)
             driver.find_element_by_xpath(numberOfArticle).click()
@@ -210,10 +209,12 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
     # @param number: the number of articles is expected to display after paging
     ##############################################################################################################          
     def checkPagingArticle(self, driver, number):
-        tblArticleRow = self.tblArticle + "/tbody/tr"
-        rowCount = len(driver.find_elements_by_xpath(tblArticleRow))
-        self.verifyTrue(number == rowCount, "\tPASSED: The article table is paging into %s articles per page" %number, "\tFAILED: The article table is paging into %s articles per page instead of %s" %(rowCount,number))
-
+        try:
+            tblArticleRow = self.tblArticle + "/tr"
+            rowCount = len(driver.find_elements_by_xpath(tblArticleRow))
+            self.verifyTrue(number == rowCount, "\tPASSED: The article table is paging into %s articles per page" %number, "\tFAILED: The article table is paging into %s articles per page instead of %s" %(rowCount,number))
+        except Exception, e:
+            print str(e)
     ##############################################################################################################
     # Check to see if all articles display 
     # @param driver: type of browser 
@@ -228,13 +229,26 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
     def DoesArticleMoveToTrash(self, driver, title):
         status = self.ddlStatus.replace("$ITEM NAME$", "Trashed")
         driver.find_element_by_xpath(status).click()
-        try:
-            table = driver.find_element_by_xpath("//table[@class = 'adminlist']//tbody")
-            tablecontent = table.text
-            if title in tablecontent:
-                return True
-            else:
-                return False   
-        except Exception,e:
-            print str(e)
-                
+        self.DoesTextContains(driver, title, self.tblArticle)
+    
+    ##############################################################################################################
+    # Click on status icon of a article
+    # @param driver: type of browser 
+    # @param title: the title expected to click on its status icon
+    ##############################################################################################################           
+    def clickStatusIcon (self, driver, title):
+        icnStatus = self.icnStatus.replace("$ARTICLE$", title)
+        driver.find_element_by_xpath(icnStatus).click()     
+
+    def clickFeatureIcon (self, driver, title):
+        icnFeature = self.imgFeaturedToggle.replace("$ARTICLE$", title)
+        driver.find_element_by_xpath(icnFeature).click()
+        
+    def checkArticleStatus(self, driver, title , status):
+        txtStatus = self.txtStatus.replace("$ARTICLE$", title)       
+        stt = driver.find_element_by_xpath(txtStatus).get_attribute("textContent")
+        self.verifyTrue(stt == status, "\tPASSED: The icon of the selected item is showed as '" + status + "'", "\tFAILED: The icon of the selected item is NOT showed as '" + status +"'")
+
+    def checkArticleFeature (self, driver, title , sttFeature ):
+        
+        

@@ -40,3 +40,19 @@ class MyClass():
 #     runner = HTMLTestRunner.HTMLTestRunner(stream=buf, title=testcase + 'Exercise 03 - Test Results', description=testcase + ' result')
 #     runner = TextTestRunner()
 #     runner.run(suite)
+
+
+
+
+# #     for testcase  in tests:
+#         suite = unittest.TestLoader().loadTestsFromTestCase(Ex02Article)
+# #         suite = unittest.TestSuite()
+# #         suite.addTest(Ex02Article(testcase))
+#         buf = file("D:\\Log\EX02TestReport" + "_" + dateTime + ".html", "wb")
+#         runner = HTMLTestRunner.HTMLTestRunner(
+#                         stream=buf,
+#                         title=testcase + ' Ex02 - Test Results',
+#                         description=testcase + ' result'
+#                         )
+#     
+#     runner.run(suite)

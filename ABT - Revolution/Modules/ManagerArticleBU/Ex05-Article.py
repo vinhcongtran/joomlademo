@@ -6,12 +6,11 @@ Created on Dec 11, 2015
 
 from time import strftime, localtime
 import unittest
-import HTMLTestRunner
-
-from ABT.Modules.Common.ImportPages import ImportPages
+from unittest.runner import TextTestRunner
 
 
-class Ex05Article(unittest.TestCase, ImportPages):
+
+class Ex05Article(unittest.TestCase, AbstractTest):
     '''
     classdocs
     '''
@@ -20,7 +19,7 @@ class Ex05Article(unittest.TestCase, ImportPages):
         '''
         Constructor
         '''
-        ImportPages.__init__(self)
+        
         self.title = "Article " + strftime("%Y-%m-%d %H:%M:%S", localtime())
         self.text = "This is an article"
         self.category = "Extensions"
@@ -177,17 +176,7 @@ class Ex05Article(unittest.TestCase, ImportPages):
 if __name__ == '__main__':
     tests = ["test_TC07ArticleChangeStatus", "test_TC08ArticleChangeFeature", "test_TC09ArticleCreateWithAccessLevel"]
     suite = unittest.TestSuite(map(Ex05Article, tests))
-    dateTime = strftime("%Y%m%d%H%M%S", localtime())
-        
-    print "=========================BEGIN TEST CASE========================="
-    dateTime = strftime("%Y%m%d%H%M%S", localtime())
-    buf = file("D:\\Log\EX05TestReport" + "_" + dateTime + ".html", "wb")
-    runner = HTMLTestRunner.HTMLTestRunner(
-                    stream=buf,
-                    title=' Ex05- Test Results',
-                    description= 'Ex05- results'
-                    )
+    runner = TextTestRunner()
     runner.run(suite)
-    print "=========================END TEST CASE========================="
 
         

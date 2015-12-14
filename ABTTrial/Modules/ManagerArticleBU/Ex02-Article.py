@@ -7,10 +7,12 @@ from time import strftime, localtime
 import unittest
 import HTMLTestRunner
 from ABT.Modules.Common.ImportPages import ImportPages
+from ABTTrial.Actions.AbstracPage import AbstractPage
 
 
 
-class Ex02Article(unittest.TestCase, ImportPages):
+
+class Ex02Article(unittest.TestCase, AbstractPage):
     '''
     classdocs
     '''

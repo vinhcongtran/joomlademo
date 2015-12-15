@@ -38,17 +38,19 @@ def smokeTestSuite():
     listTCs = ["test_TC01ArticleCreate","test_TC02ArticleEdit"]
     # Discover and load all unit tests in all files named ``*_test.py`` in ``./src/``   
     path = currentPath.replace("suites","ManagerArticleBU")
-    # Add TCs to suite
-    suite = unittest.TestSuite()
+
     for all_test_suite in unittest.defaultTestLoader.discover(path, pattern='*.py'):
         for test_suite in all_test_suite:
-            for test_case in test_suite:
-                if test_case in listTCs:
+            try:
+                for test_case in test_suite:
                     testCaseName = str(str(test_case).split(" (")[0])
-                    print "Running TC: " + testCaseName
-                    suite.addTest(test_case)
-                    runner.run(suite)
-                    unittest.main(testRunner=runner)
-                        
+                    if testCaseName in listTCs:
+                        print "Running TC: " + testCaseName
+    #                     suite.addTest(test_case)
+                        runner = unittest.TextTestRunner()
+                        runner.run(test_case)
+    #                     unittest.main(testRunner=runner)
+            except Exception, e:
+                print str(e)  
 if __name__ == '__main__':
     smokeTestSuite()

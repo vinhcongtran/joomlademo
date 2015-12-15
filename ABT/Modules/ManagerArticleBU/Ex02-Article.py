@@ -8,7 +8,7 @@ currentPath =  os.path.dirname(os.path.realpath(__file__))
 currentPath = currentPath.replace("\\", "/")
 modulesPath = str(currentPath)[:str(currentPath).rfind("ABT") + 3]
 seleniumPath = modulesPath + "/Libs/selenium-2.43.0-py2.7.egg"
-print seleniumPath
+print "--" + seleniumPath
 
 sys.path.append(modulesPath)
 # sys.path.append(teamCityPath)

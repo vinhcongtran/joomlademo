@@ -30,11 +30,11 @@ print "--Added"
 
     
 def smokeTestSuite():
-    if is_running_under_teamcity():
-        runner = TeamcityTestRunner()
-    else:
-        runner = unittest.TextTestRunner()
-        
+#     if is_running_under_teamcity():
+#         runner = TeamcityTestRunner()
+#     else:
+#         runner = unittest.TextTestRunner()
+    runner = unittest.TextTestRunner()    
     listTCs = ["test_TC01ArticleCreate","test_TC02ArticleEdit"]
     # Discover and load all unit tests in all files named ``*_test.py`` in ``./src/``   
     path = currentPath.replace("suites","ManagerArticleBU")
@@ -46,10 +46,9 @@ def smokeTestSuite():
                     testCaseName = str(str(test_case).split(" (")[0])
                     if testCaseName in listTCs:
                         print "Running TC: " + testCaseName
-    #                     suite.addTest(test_case)
+
                         runner = unittest.TextTestRunner()
                         runner.run(test_case)
-    #                     unittest.main(testRunner=runner)
             except Exception, e:
                 print str(e)  
 if __name__ == '__main__':

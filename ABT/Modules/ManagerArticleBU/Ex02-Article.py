@@ -3,6 +3,17 @@ Created on Dec 8, 2015
 
 @author: van.ngo
 '''
+import os, sys
+currentPath =  os.path.dirname(os.path.realpath(__file__))
+currentPath = currentPath.replace("\\", "/")
+modulesPath = str(currentPath)[:str(currentPath).rfind("ABT") + 3]
+seleniumPath = modulesPath + "/Libs/selenium-2.43.0-py2.7.egg"
+print seleniumPath
+
+sys.path.append(modulesPath)
+# sys.path.append(teamCityPath)
+sys.path.append(seleniumPath)
+
 from time import strftime, localtime
 import unittest
 import HTMLTestRunner

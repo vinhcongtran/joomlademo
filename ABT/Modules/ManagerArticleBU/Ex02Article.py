@@ -204,21 +204,21 @@ class Ex02Article(unittest.TestCase, ImportPages):
         self.logInfo("Step 15-  Verify the titles of displayed articles are partially matched with the entered keyword ")         
         self.checkTextContains(self.browser, self.title)
     
-if __name__ == '__main__':
-    
-    tests = ["test_TC03ArticleDelete"]
-    dateTime = strftime("%Y%m%d%H%M%S", localtime())
-    suite = unittest.TestSuite(map(Ex02Article, tests))
-        
-    print "=========================BEGIN TEST CASE========================="
-    dateTime = strftime("%Y%m%d%H%M%S", localtime())
-    buf = file("D:\\Log\EX02TestReport" + "_" + dateTime + ".html", "wb")
-    runner = TeamcityTestRunner()
-#     runner = HTMLTestRunner.HTMLTestRunner(
-#                     stream=buf,
-#                     title=' Ex02- Test Results',
-#                     description= 'Ex02 - results'
-#                     )
-    runner.run(suite)
-    print "=========================END TEST CASE========================="
+# if __name__ == '__main__':
+#     
+#     tests = ["test_TC03ArticleDelete"]
+#     dateTime = strftime("%Y%m%d%H%M%S", localtime())
+#     suite = unittest.TestSuite(map(Ex02Article, tests))
+#         
+#     print "=========================BEGIN TEST CASE========================="
+#     dateTime = strftime("%Y%m%d%H%M%S", localtime())
+#     buf = file("D:\\Log\EX02TestReport" + "_" + dateTime + ".html", "wb")
+#     runner = TeamcityTestRunner()
+# #     runner = HTMLTestRunner.HTMLTestRunner(
+# #                     stream=buf,
+# #                     title=' Ex02- Test Results',
+# #                     description= 'Ex02 - results'
+# #                     )
+#     runner.run(suite)
+#     print "=========================END TEST CASE========================="
                     

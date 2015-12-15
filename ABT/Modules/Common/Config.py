@@ -11,4 +11,4 @@ class Config():
 
 
     def __init__(self):
-        self.cfTimeWait = 60
+        self.cfTimeWait = 120

@@ -37,7 +37,7 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
     ############################################################################################################## 
     def checkMessageDisplay(self, driver, message):  
         msg = self.lblMessage.replace("$MESSAGE$", message)
-        self.verifyTrue(self.doesElementDisplay(driver, msg), "\tPASSED : " + message + " message displays", "FAILED : " + message + " message does not display")
+        self.verifyTrue(self.doesElementDisplay(driver, msg), "\t[PASSED] : " + message + " message displays", "[FAILED] : " + message + " message does not display")
         
           
     ##############################################################################################################
@@ -46,7 +46,7 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
     # @param article: article expected to check
     ##############################################################################################################    
     def checkArticleCreated(self, driver, article):       
-            self.verifyTrue(self.doesArticleExist(driver, article) == True, "\tPASSED : the created '" + article + "' article exists on the articles table", "\tFAILED : the created '" + article + "' article does not exist on the articles table"  )
+            self.verifyTrue(self.doesArticleExist(driver, article) == True, "\t[PASSED] : the created '" + article + "' article exists on the articles table", "\t[FAILED] : the created '" + article + "' article does not exist on the articles table"  )
             
     ##############################################################################################################
     # Check an existing article edited 
@@ -54,7 +54,7 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
     # @param article: article expected to check
     ##############################################################################################################    
     def checkArticleEdited(self, driver, article):       
-            self.verifyTrue(self.doesArticleExist(driver, article) == True, "\tPASSED : the edited '" + article + "' article exists on the articles table", "\tFAILED : the edited '" + article + "' article does not exist on the articles table"  )
+            self.verifyTrue(self.doesArticleExist(driver, article) == True, "\t[PASSED] : the edited '" + article + "' article exists on the articles table", "\t[FAILED] : the edited '" + article + "' article does not exist on the articles table"  )
             
     ##############################################################################################################
     # Search an article by title 
@@ -167,7 +167,7 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
     def checkTextContains(self, driver, keywords):
             table = driver.find_element_by_xpath(self.tblArticle)
             tablecontent = table.text
-            self.verifyIn(keywords, tablecontent, "\tPASSED: The " + keywords + "displays in the table", "\tFAILED: The " + keywords + "does not display in the table")
+            self.verifyIn(keywords, tablecontent, "\t[PASSED]: The " + keywords + "displays in the table", "\t[FAILED]: The " + keywords + "does not display in the table")
 
     ##############################################################################################################
     # Check to see if a text is contained in a table finding by xpath
@@ -209,7 +209,7 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
         try:
             tblArticleRow = self.tblArticle + "/tr"
             rowCount = len(driver.find_elements_by_xpath(tblArticleRow))
-            self.verifyTrue(number == rowCount, "\tPASSED: The article table is paging into %s articles per page" %number, "\tFAILED: The article table is paging into %s articles per page instead of %s" %(rowCount,number))
+            self.verifyTrue(number == rowCount, "\t[PASSED]: The article table is paging into %s articles per page" %number, "\t[FAILED]: The article table is paging into %s articles per page instead of %s" %(rowCount,number))
         except Exception, e:
             print str(e)
     ##############################################################################################################
@@ -219,7 +219,7 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
     def checkAllArticleDisplay (self, driver):
         exist = self.doesElementNotExisted(driver, self.barPage)
         try:
-            self.verifyTrue(exist == False, "\tPASSED: All articles are displayed in one page" , "\tFAILED: All articles are not displayed in one page")
+            self.verifyTrue(exist == False, "\t[PASSED]: All articles are displayed in one page" , "\t[FAILED]: All articles are not displayed in one page")
         except Exception, e:
             print str(e)
 
@@ -260,7 +260,7 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
     def checkArticleStatus(self, driver, title , epxStatus):
         txtStatus = self.txtStatus.replace("$ARTICLE$", title)       
         stt = driver.find_element_by_xpath(txtStatus).get_attribute("textContent")
-        self.verifyTrue(stt == epxStatus, "\tPASSED: The icon of the selected item is showed as '" + epxStatus + "'", "\tFAILED: The icon of the selected item is NOT showed as '" + epxStatus +"'")
+        self.verifyTrue(stt == epxStatus, "\t[PASSED]: The icon of the selected item is showed as '" + epxStatus + "'", "\t[FAILED]: The icon of the selected item is NOT showed as '" + epxStatus +"'")
     
     ##############################################################################################################
     # Check status of Feature icon of a article on Article table
@@ -271,7 +271,7 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
     def checkArticleFeatureIconStatus (self, driver, title , expFeature):
         imgFeature = self.imgFeaturedToggle.replace("$ARTICLE$", title)  
         featureCurrent = driver.find_element_by_xpath(imgFeature).get_attribute("alt")
-        self.verifyTrue(expFeature == featureCurrent, "\tPASSED: The icon of the selected item is showed as '" + expFeature + "'", "\tFAILED: The icon of the selected item is NOT showed as '" + expFeature +"'")
+        self.verifyTrue(expFeature == featureCurrent, "\t[PASSED]: The icon of the selected item is showed as '" + expFeature + "'", "\t[FAILED]: The icon of the selected item is NOT showed as '" + expFeature +"'")
     
     ##############################################################################################################
     # Check current Access Level of expected article
@@ -282,7 +282,7 @@ class ManagerArticle(ManagerArticlePage, CommonActions):
     ##############################################################################################################  
     def checkAccessLevelValue(self, driver, title, propertyReference, expValue):
         currentValue = self.getArticleProperty(driver, title, propertyReference)
-        self.verifyTrue(expValue == currentValue, "\tPASSED: The %s of the article is displayed as '%s'" %(propertyReference,expValue), "\tFAILED: The %s of the article is NOT displayed as '%s' '" %(propertyReference,expValue))
+        self.verifyTrue(expValue == currentValue, "\t[PASSED]: The %s of the article is displayed as '%s'" %(propertyReference,expValue), "\t[FAILED]: The %s of the article is NOT displayed as '%s' '" %(propertyReference,expValue))
     
     ##############################################################################################################
     # Get value of a property of expected article

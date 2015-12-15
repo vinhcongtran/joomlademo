@@ -144,7 +144,7 @@ class NewArticle(CommonActions, NewArticlePage):
             expectedOption = "Yes"
         else:
             expectedOption = "No"
-        self.verifyTrue(currentOption == expectedOption, "\tPASSED : The article is %s successfully " %sttFeature , "\tFAILED: The article is NOT %s successfully " %sttFeature)
+        self.verifyTrue(currentOption == expectedOption, "\t[PASSED] : The article is %s successfully " %sttFeature , "\t[FAILED]: The article is NOT %s successfully " %sttFeature)
         
         #Click option icon to save of the top right toolbar
         option = self.btnToolbarBox.replace("$TOOLBAR BUTTON NAME$", "Close")
@@ -194,7 +194,7 @@ class NewArticle(CommonActions, NewArticlePage):
             self.logInfo("Current TEXT doesn't not match with expected one")
             
         correctInfomation = titleCorrect and categoryCorrect and accessCorrect and textCorrect
-        self.verifyTrue(correctInfomation == True, "\tPASSED : Created %s's information is displayed correctly " %title , "\tFAILED: Created %s's information is NOT displayed correctly " %title)
+        self.verifyTrue(correctInfomation == True, "\t[PASSED] : Created %s's information is displayed correctly " %title , "\t[FAILED]: Created %s's information is NOT displayed correctly " %title)
         
         #Redirect to Manager Article
         option = self.btnToolbarBox.replace("$TOOLBAR BUTTON NAME$", "Close")

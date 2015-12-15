@@ -10,7 +10,7 @@ import unittest
 from teamcity import is_running_under_teamcity
 from teamcity.unittestpy import TeamcityTestRunner
 
-# Update PATH before running
+# Add PATH before running
 currentPath =  os.path.dirname(os.path.realpath(__file__))
 currentPath = currentPath.replace("\\", "/")
 modulesPath = str(currentPath)[:str(currentPath).rfind("ABT")]

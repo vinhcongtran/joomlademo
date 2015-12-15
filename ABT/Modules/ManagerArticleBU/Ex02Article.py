@@ -3,27 +3,11 @@ Created on Dec 8, 2015
 
 @author: van.ngo
 '''
-import os, sys
-currentPath =  os.path.dirname(os.path.realpath(__file__))
-currentPath = currentPath.replace("\\", "/")
-modulesPath = str(currentPath)[:str(currentPath).rfind("ABT")]
-seleniumPath = modulesPath + "ABT/Libs/selenium"
-teamcityPath = modulesPath + "ABT/Libs/teamcity_messages-1.8-py2.7.egg"
-print "--" + seleniumPath
-print "--" + modulesPath
-print "--" + teamcityPath
-
-sys.path.append(modulesPath)
-sys.path.append(teamcityPath)
-sys.path.append(seleniumPath)
-
-print "--Added"
 
 from time import strftime, localtime
 import unittest
 import HTMLTestRunner
 from ABT.Modules.Common.ImportPages import ImportPages
-from teamcity import is_running_under_teamcity
 from teamcity.unittestpy import TeamcityTestRunner
 
 
@@ -167,7 +151,7 @@ class Ex02Article(unittest.TestCase, ImportPages):
         self.checkArticleMovedToTrash(self.browser, self.title)
         
     
-    def test_TO04ArticleSearch(self):
+    def test_TC04ArticleSearch(self):
         
         # Main steps
         self.logInfo("Step 1 - Navigate to Joomla administrator admin page")

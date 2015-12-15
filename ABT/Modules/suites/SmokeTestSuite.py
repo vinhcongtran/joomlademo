@@ -22,31 +22,29 @@ sys.path.append(teamcityPath)
 sys.path.append(seleniumPath)
     
 def smokeTestSuite():
-    runner = unittest.TextTestRunner()    
-    
+
     #List of test cases wanted to run
     listTCs = ["test_TC01ArticleCreate","test_TC02ArticleEdit"]
     
     # Discover and load all unit tests in all files named ``*_test.py`` in ``./src/``   
     path = currentPath.replace("suites","ManagerArticleBU")
-
-    # Run test cases in the list
+    # Add TCs to suite
+    suite = unittest.TestSuite()
     for all_test_suite in unittest.defaultTestLoader.discover(path, pattern='*.py'):
         for test_suite in all_test_suite:
             try:
                 for test_case in test_suite:
-                    testCaseName = str(test_case)
-                    dateTime = strftime("%Y%m%d%H%M%S", localtime())
-                    buf = file("D:\\Log\SmokeTestReport" + "_" + dateTime + ".html", "wb")
-                    runner = TeamcityTestRunner()
-                    runner = HTMLTestRunner.HTMLTestRunner(stream=buf,title=testCaseName + ' - Test Results',description=testCaseName + ' result')
-                    runner.run(test_case)
+                    testCaseName = str(str(test_case).split(" ")[0])
                     if testCaseName in listTCs:
-                        print "Running TC: " + testCaseName
-
-                        runner = unittest.TextTestRunner()
-                        runner.run(test_case)
+                        suite.addTest(test_case)
             except Exception, e:
                 print str(e)  
+                
+    # Run Test Cases
+    runner = unittest.TextTestRunner()                   
+    runner.run(suite)
+    unittest.main(testRunner=runner)
+    
+    
 if __name__ == '__main__':
     smokeTestSuite()

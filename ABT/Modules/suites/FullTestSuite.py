@@ -30,11 +30,7 @@ def fullTestSuite():
         for test_suite in all_test_suite:
             suite.addTests(test_suite)
     # Run test cases
-    if is_running_under_teamcity():
-        runner = TeamcityTestRunner()
-    else:
-        runner = unittest.TextTestRunner()
-                        
+    runner = unittest.TextTestRunner()                   
     runner.run(suite)
     unittest.main(testRunner=runner)
 if __name__ == '__main__':

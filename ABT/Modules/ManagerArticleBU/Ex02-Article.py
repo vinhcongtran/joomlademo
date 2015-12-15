@@ -6,12 +6,15 @@ Created on Dec 8, 2015
 import os, sys
 currentPath =  os.path.dirname(os.path.realpath(__file__))
 currentPath = currentPath.replace("\\", "/")
-modulesPath = str(currentPath)[:str(currentPath).rfind("ABT") + 3]
-seleniumPath = modulesPath + "/Libs/selenium-2.43.0-py2.7.egg"
+modulesPath = str(currentPath)[:str(currentPath).rfind("ABT")]
+seleniumPath = modulesPath + "ABT/Libs/selenium"
+teamcityPath = modulesPath + "ABT/Libs/teamcity_messages-1.8-py2.7.egg"
 print "--" + seleniumPath
+print "--" + modulesPath
+print "--" + teamcityPath
 
 sys.path.append(modulesPath)
-# sys.path.append(teamCityPath)
+sys.path.append(teamcityPath)
 sys.path.append(seleniumPath)
 
 print "--Added"
@@ -210,12 +213,12 @@ if __name__ == '__main__':
     print "=========================BEGIN TEST CASE========================="
     dateTime = strftime("%Y%m%d%H%M%S", localtime())
     buf = file("D:\\Log\EX02TestReport" + "_" + dateTime + ".html", "wb")
-    runner = TeamcityTestRunner()
-# #     runner = HTMLTestRunner.HTMLTestRunner(
-#                     stream=buf,
-#                     title=' Ex02- Test Results',
-#                     description= 'Ex02 - results'
-#                     )
+#     runner = TeamcityTestRunner()
+    runner = HTMLTestRunner.HTMLTestRunner(
+                    stream=buf,
+                    title=' Ex02- Test Results',
+                    description= 'Ex02 - results'
+                    )
     runner.run(suite)
     print "=========================END TEST CASE========================="
                     

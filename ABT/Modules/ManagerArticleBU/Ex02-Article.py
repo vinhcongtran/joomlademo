@@ -14,6 +14,8 @@ sys.path.append(modulesPath)
 # sys.path.append(teamCityPath)
 sys.path.append(seleniumPath)
 
+print "--Added"
+
 from time import strftime, localtime
 import unittest
 import HTMLTestRunner

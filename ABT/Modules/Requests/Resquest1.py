@@ -1,7 +1,7 @@
 '''
 Created on Dec 17, 2015
 
-Need Libraries : xlrd, xlsxwriter, JIRA. They will be found at 
+Need Libraries : xlrd, xlsxwriter, JIRA. They will be found at '\ABT\Libs'
 
 @author: van.ngo
 '''

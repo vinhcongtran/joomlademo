@@ -16,7 +16,6 @@ class Config():
         self.cfShortTime = 60
         self.cfImplicitlyTimeWait = 90
         self.cfPageLoadTimeout = 600
-        self.cfRequiredRun = os.environ.get('REQUIRED_RUN',"False")
         self.cfDriver = os.environ.get('SELENIUM_DEVICE',"Firefox")
         self.cfCrmUrl = "http://192.168.190.92:8080/Authenticate/Index/?ReturnUrl=/"
         
